@@ -9,8 +9,8 @@ namespace JackFrame.GenGen.Sample {
 
         void Start() {
             generator = new GGSimpleMazeDFSGenerator();
-            generator.Input(19, 19, 0, 0);
-            // generator.GenInstant();
+            generator.Input(35, 37, 0, 0);
+            generator.GenInstant();
         }
 
         void Update() {

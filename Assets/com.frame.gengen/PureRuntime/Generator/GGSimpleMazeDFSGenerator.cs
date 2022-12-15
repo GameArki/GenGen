@@ -5,13 +5,14 @@ namespace JackFrame.GenGen {
 
     // Simple Maze (DFS)
     // From BottomLeft(0, 0) To TopRight(width, height)
+    // 无环迷宫
     public class GGSimpleMazeDFSGenerator {
 
         Random rd;
 
         // ==== Start ====
         int[] map;
-        int maxCount;
+        int maxCountExceptWall;
 
         Vec2Int size;
         public Vec2Int Size => size;
@@ -27,7 +28,7 @@ namespace JackFrame.GenGen {
         // ==== Temp ====
         Vec2Int curPos;
         public Vec2Int CurPos => curPos;
-        
+
         List<Vec2Int> tmpDirList;
 
         public GGSimpleMazeDFSGenerator() { }
@@ -39,7 +40,13 @@ namespace JackFrame.GenGen {
             this.rd = new Random();
 
             this.visitedCount = 0;
-            this.maxCount = width * height;
+            if (width % 2 != 0) {
+                width += 1;
+            }
+            if (height % 2 != 0) {
+                height += 1;
+            }
+            this.maxCountExceptWall = width * height / 4;
 
             this.visitedIndexStack = new Stack<Vec2Int>();
 
@@ -51,19 +58,19 @@ namespace JackFrame.GenGen {
 
         }
 
-        // 一次性生成
-        public void GenInstant() {
-            while (!isDone) {
-                GenByStep();
-            }
-        }
-
         void GenFirstStep(int x, int y) {
             int index = GetIndex(x, y);
             map[index] = 2;
             visitedIndexStack.Push(new Vec2Int(x, y));
             visitedCount += 1;
             curPos = new Vec2Int(x, y);
+        }
+
+        // 一次性生成
+        public void GenInstant() {
+            while (!isDone) {
+                GenByStep();
+            }
         }
 
         public void GenByStep() {
@@ -133,12 +140,13 @@ namespace JackFrame.GenGen {
                 arr[GetIndex(passPos)] = 2;
                 visited.Push(nextPos);
                 curPos = nextPos;
+                visitedCount += 1;
             }
 
         }
 
         bool IsAllVisited() {
-            return visitedCount >= maxCount;
+            return visitedCount >= maxCountExceptWall;
         }
 
         int GetIndex(int x, int y) {
