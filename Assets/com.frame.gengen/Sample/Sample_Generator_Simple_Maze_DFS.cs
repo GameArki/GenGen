@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace JackFrame.GenGen.Sample {
 
-    public class Sample_Generator_Maze : MonoBehaviour {
+    public class Sample_Generator_Simple_Maze_DFS : MonoBehaviour {
 
         GGSimpleMazeDFSGenerator generator;
 
@@ -27,7 +27,6 @@ namespace JackFrame.GenGen.Sample {
                 return;
             }
 
-            // ReadOnlySpan<int> res = generator.GetResult();
             ReadOnlySpan<int> res = generator.GetMap();
             if (res.Length == 0) {
                 return;
@@ -41,11 +40,11 @@ namespace JackFrame.GenGen.Sample {
             Color color = Color.black;
             for (int i = 0; i < res.Length; i += 1) {
                 int value = res[i];
-                pos = generator.GetPos(i);
+                pos = Vec2Int.FromArrayIndex(i, size.x);
                 Vector2 drawPos = new Vector2(pos.x, pos.y);
-                if (value == 0) {
+                if (value == GGSimpleMazeDFSGenerator.NODE_WALL) {
                     color = Color.black;
-                } else {
+                } else if (value == GGSimpleMazeDFSGenerator.NODE_ROAD) {
                     color = Color.white;
                 }
                 GizmosDrawHelper.DrawCube(drawPos, cubeSize, color);
