@@ -5,10 +5,10 @@ namespace JackFrame.GenGen.Sample {
 
     public class Sample_Generator_Maze : MonoBehaviour {
 
-        GGMazeDFSGenerator generator;
+        GGSimpleMazeDFSGenerator generator;
 
         void Start() {
-            generator = new GGMazeDFSGenerator();
+            generator = new GGSimpleMazeDFSGenerator();
             generator.Input(19, 19, 0, 0);
             // generator.GenInstant();
         }
@@ -28,7 +28,7 @@ namespace JackFrame.GenGen.Sample {
             }
 
             // ReadOnlySpan<int> res = generator.GetResult();
-            ReadOnlySpan<int> res = generator.GetResult();
+            ReadOnlySpan<int> res = generator.GetMap();
             if (res.Length == 0) {
                 return;
             }
@@ -52,7 +52,7 @@ namespace JackFrame.GenGen.Sample {
             }
 
             color = Color.green;
-            pos = generator.GetCurPos();
+            pos = generator.CurPos;
             GizmosDrawHelper.DrawCube(new Vector2(pos.x, pos.y), cubeSize, color);
 
         }

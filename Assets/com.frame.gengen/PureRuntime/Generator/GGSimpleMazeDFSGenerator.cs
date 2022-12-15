@@ -3,13 +3,14 @@ using System.Collections.Generic;
 
 namespace JackFrame.GenGen {
 
+    // Simple Maze (DFS)
     // From BottomLeft(0, 0) To TopRight(width, height)
-    public class GGMazeDFSGenerator {
+    public class GGSimpleMazeDFSGenerator {
 
         Random rd;
 
         // ==== Start ====
-        int[] src;
+        int[] map;
         int maxCount;
 
         Vec2Int size;
@@ -25,13 +26,15 @@ namespace JackFrame.GenGen {
 
         // ==== Temp ====
         Vec2Int curPos;
+        public Vec2Int CurPos => curPos;
+        
         List<Vec2Int> tmpDirList;
 
-        public GGMazeDFSGenerator() { }
+        public GGSimpleMazeDFSGenerator() { }
 
         public void Input(int width, int height, int startX, int startY) {
 
-            this.src = new int[width * height];
+            this.map = new int[width * height];
             this.size = new Vec2Int() { x = width, y = height };
             this.rd = new Random();
 
@@ -49,18 +52,18 @@ namespace JackFrame.GenGen {
         }
 
         // 一次性生成
-        public int[] GenInstant() {
-            do {
+        public void GenInstant() {
+            while (!isDone) {
                 GenByStep();
-            } while (!isDone);
-            return src;
+            }
         }
 
         void GenFirstStep(int x, int y) {
             int index = GetIndex(x, y);
-            src[index] = 2;
+            map[index] = 2;
             visitedIndexStack.Push(new Vec2Int(x, y));
             visitedCount += 1;
+            curPos = new Vec2Int(x, y);
         }
 
         public void GenByStep() {
@@ -109,22 +112,19 @@ namespace JackFrame.GenGen {
 
             var visited = visitedIndexStack;
             if (dirList.Count == 0) {
-                if (IsAllVisited()) {
+                if (IsAllVisited() || visited.Count == 0) {
                     isDone = true;
+                    visited.Clear();
                     return;
                 }
                 // 4. 如果所有方向都已经访问过，则回退一步
-                if (visited.Count == 0) {
-                    isDone = true;
-                    return;
-                }
                 _ = visited.Pop();
                 curPos = visited.Peek();
                 return;
             } else {
                 // 1. 随机选择一个方向
                 var nextPos = dirList[0];
-                var arr = src;
+                var arr = map;
                 // 2. 方向上未访问过，标记为路
                 // 3. 经过的中间点标记为路
                 var diff = nextPos - curPos;
@@ -157,19 +157,15 @@ namespace JackFrame.GenGen {
             if (x < 0 || x >= size.x || y < 0 || y >= size.y) {
                 return 3;
             }
-            return src[x + y * size.x];
+            return map[x + y * size.x];
         }
 
         int GetDirValue(Vec2Int pos) {
             return GetDirValue(pos.x, pos.y);
         }
 
-        public Vec2Int GetCurPos() {
-            return curPos;
-        }
-
-        public ReadOnlySpan<int> GetResult() {
-            return src;
+        public ReadOnlySpan<int> GetMap() {
+            return map;
         }
 
     }
