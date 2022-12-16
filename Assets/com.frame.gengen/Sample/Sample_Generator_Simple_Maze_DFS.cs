@@ -6,10 +6,11 @@ namespace JackFrame.GenGen.Sample {
     public class Sample_Generator_Simple_Maze_DFS : MonoBehaviour {
 
         GGSimpleMazeDFSGenerator generator;
+        [SerializeField] Vector2Int size;
 
         void Start() {
             generator = new GGSimpleMazeDFSGenerator();
-            generator.Input(35, 37, 0, 0);
+            generator.Input(size.x, size.y, 0, 0);
             generator.GenInstant();
         }
 
@@ -32,27 +33,7 @@ namespace JackFrame.GenGen.Sample {
                 return;
             }
 
-            var size = generator.Size;
-
-            Vector2 cubeSize = new Vector2(0.3f, 0.3f);
-
-            Vec2Int pos;
-            Color color = Color.black;
-            for (int i = 0; i < res.Length; i += 1) {
-                int value = res[i];
-                pos = Vec2Int.FromArrayIndex(i, size.x);
-                Vector2 drawPos = new Vector2(pos.x, pos.y);
-                if (value == GGSimpleMazeDFSGenerator.NODE_WALL) {
-                    color = Color.black;
-                } else if (value == GGSimpleMazeDFSGenerator.NODE_ROAD) {
-                    color = Color.white;
-                }
-                GizmosDrawHelper.DrawCube(drawPos, cubeSize, color);
-            }
-
-            color = Color.green;
-            pos = generator.CurPos;
-            GizmosDrawHelper.DrawCube(new Vector2(pos.x, pos.y), cubeSize, color);
+            GizmosDrawHelper.DrawMaze(res, generator.CurPos, generator.Size, new Vector2(0.3f, 0.3f));
 
         }
 
