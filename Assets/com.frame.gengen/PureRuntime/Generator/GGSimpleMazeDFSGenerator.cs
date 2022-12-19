@@ -10,6 +10,13 @@ namespace JackFrame.GenGen {
 
         Random rd;
 
+        // -1 : 边界
+        // 0  : 墙
+        // 1  : 路
+        public const int NODE_BORDER = -1;
+        public const int NODE_WALL = 0;
+        public const int NODE_ROAD = 1;
+
         // ==== Start ====
         int[] map;
         int maxCountExceptWall;
@@ -59,11 +66,12 @@ namespace JackFrame.GenGen {
         }
 
         void GenFirstStep(int x, int y) {
-            int index = GetIndex(x, y);
-            map[index] = 2;
-            visitedIndexStack.Push(new Vec2Int(x, y));
+            Vec2Int startPos = new Vec2Int(x, y);
+            int index = startPos.ToArrayIndex(size.x);
+            map[index] = NODE_ROAD;
+            visitedIndexStack.Push(startPos);
             visitedCount += 1;
-            curPos = new Vec2Int(x, y);
+            curPos = startPos;
         }
 
         // 一次性生成
@@ -79,12 +87,6 @@ namespace JackFrame.GenGen {
                 return;
             }
 
-            // src = [0, 0, 0 ......]
-            // 0  : 未访问
-            // 1  : 已访问
-            // 2  : 路
-            // 3  : 障碍
-
             // 1. 随机选择一个方向
             // 2. 如果方向上未访问过，则标记为路，然后继续往前走
             // 3. 如果方向上已经访问过，则选择另一个方向
@@ -96,16 +98,16 @@ namespace JackFrame.GenGen {
             Vec2Int down = new Vec2Int(curPos.x, curPos.y - 2);
             Vec2Int left = new Vec2Int(curPos.x - 2, curPos.y);
             Vec2Int right = new Vec2Int(curPos.x + 2, curPos.y);
-            if (GetDirValue(up) == 0) {
+            if (GetDirValue(up) == NODE_WALL) {
                 dirList.Add(up);
             }
-            if (GetDirValue(down) == 0) {
+            if (GetDirValue(down) == NODE_WALL) {
                 dirList.Add(down);
             }
-            if (GetDirValue(left) == 0) {
+            if (GetDirValue(left) == NODE_WALL) {
                 dirList.Add(left);
             }
-            if (GetDirValue(right) == 0) {
+            if (GetDirValue(right) == NODE_WALL) {
                 dirList.Add(right);
             }
 
@@ -136,8 +138,13 @@ namespace JackFrame.GenGen {
                 // 3. 经过的中间点标记为路
                 var diff = nextPos - curPos;
                 var passPos = curPos + diff / 2;
-                arr[GetIndex(nextPos)] = 2;
-                arr[GetIndex(passPos)] = 2;
+                try {
+                    arr[nextPos.ToArrayIndex(size.x)] = NODE_ROAD;
+                    arr[passPos.ToArrayIndex(size.x)] = NODE_ROAD;
+                } catch {
+                    string err = $"nextPos: {nextPos}, curPos: {curPos}, passPos: {passPos}, size: {size}";
+                    throw new Exception(err);
+                }
                 visited.Push(nextPos);
                 curPos = nextPos;
                 visitedCount += 1;
@@ -149,27 +156,11 @@ namespace JackFrame.GenGen {
             return visitedCount >= maxCountExceptWall;
         }
 
-        int GetIndex(int x, int y) {
-            return x + y * size.x;
-        }
-
-        int GetIndex(Vec2Int pos) {
-            return pos.x + pos.y * size.x;
-        }
-
-        public Vec2Int GetPos(int index) {
-            return new Vec2Int() { x = index % size.x, y = index / size.x };
-        }
-
-        int GetDirValue(int x, int y) {
-            if (x < 0 || x >= size.x || y < 0 || y >= size.y) {
-                return 3;
-            }
-            return map[x + y * size.x];
-        }
-
         int GetDirValue(Vec2Int pos) {
-            return GetDirValue(pos.x, pos.y);
+            if (pos.x < 0 || pos.x >= size.x || pos.y < 0 || pos.y >= size.y) {
+                return NODE_BORDER;
+            }
+            return map[pos.ToArrayIndex(size.x)];
         }
 
         public ReadOnlySpan<int> GetMap() {

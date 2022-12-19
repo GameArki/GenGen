@@ -18,7 +18,9 @@ namespace JackFrame.GenGen.Sample {
         }
 
         void Update() {
-            waveOffset += Time.deltaTime;
+            if (active) {
+                waveOffset += Time.deltaTime;
+            }
         }
 
         void OnDrawGizmos() {
