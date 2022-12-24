@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace JackFrame.GenGen {
+namespace GameArki.GenGen {
 
     // Simple Maze (DFS)
     // From BottomLeft(0, 0) To TopRight(width, height)

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace JackFrame.GenGen.Sample {
+namespace GameArki.GenGen.Sample {
 
     public static class GizmosDrawHelper {
 

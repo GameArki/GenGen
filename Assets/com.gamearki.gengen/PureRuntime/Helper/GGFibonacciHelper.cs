@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace JackFrame.GenGen {
+namespace GameArki.GenGen {
 
     public static class GGFibonacciHelper {
 

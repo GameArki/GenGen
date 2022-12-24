@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace JackFrame.GenGen.Sample {
+namespace GameArki.GenGen.Sample {
 
     [ExecuteInEditMode]
     public class Sample_Cycle_Sine : MonoBehaviour {

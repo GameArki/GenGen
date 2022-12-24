@@ -1,4 +1,4 @@
-namespace JackFrame.GenGen {
+namespace GameArki.GenGen {
 
     public struct Vec2Int {
 

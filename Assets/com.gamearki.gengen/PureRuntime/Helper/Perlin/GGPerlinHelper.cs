@@ -8,7 +8,7 @@
 //
 using System;
 
-namespace JackFrame.GenGen {
+namespace GameArki.GenGen {
 
     public static class GGPerlinHelper {
 

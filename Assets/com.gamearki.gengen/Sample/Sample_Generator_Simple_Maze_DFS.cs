@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace JackFrame.GenGen.Sample {
+namespace GameArki.GenGen.Sample {
 
     public class Sample_Generator_Simple_Maze_DFS : MonoBehaviour {
 

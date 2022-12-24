@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 
-namespace JackFrame {
+namespace GameArki {
 
     public class UnityTextWriter : TextWriter {
 

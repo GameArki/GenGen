@@ -4,7 +4,7 @@ using System.Reflection;
 using UnityEngine;
 using NUnit.Framework;
 
-namespace JackFrame.GenGen.Tests {
+namespace GameArki.GenGen.Tests {
 
     public class Tests_GGFibonacci {
 

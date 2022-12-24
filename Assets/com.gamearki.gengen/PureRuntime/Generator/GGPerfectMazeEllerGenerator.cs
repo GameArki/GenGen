@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace JackFrame.GenGen {
+namespace GameArki.GenGen {
 
     // Simple Maze Eller
     // BottomLeft To TopRight
