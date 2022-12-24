@@ -1,9 +1,7 @@
 {
-    "name": "JackFrame.GenGen.Sample",
+    "name": "GameArki.GenGen",
     "rootNamespace": "",
-    "references": [
-        "GUID:1b05b5b12b08d944da7b3bcf2ce03f22"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
@@ -12,5 +10,5 @@
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
-    "noEngineReferences": false
+    "noEngineReferences": true
 }
